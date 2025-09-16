@@ -1,5 +1,6 @@
 import React from 'react';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 function LogoutButton() {
   const handleLogout = () => {
     // Remove the JWT from session storage
@@ -11,9 +12,9 @@ function LogoutButton() {
   };
 
   return (
-    <button onClick={handleLogout}>
+    <Button onClick={handleLogout}>
       Logout
-    </button>
+    </Button>
   );
 }
 
