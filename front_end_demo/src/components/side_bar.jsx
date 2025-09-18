@@ -7,6 +7,7 @@ function MySidebar() {
         <Nav.Link href="/home" className="text-white">Home</Nav.Link>
         <Nav.Link href="/about" className="text-white">About</Nav.Link>
         <Nav.Link href="/list_reverse" className="text-white">list_reverse</Nav.Link>
+        <Nav.Link href="/logout" className="text-white">logout</Nav.Link>
       </Nav>
     </div>
   );

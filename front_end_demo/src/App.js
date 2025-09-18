@@ -1,15 +1,19 @@
 import React from 'react';
-import API_TEST from './components/api_test';
+
 import './App.css';
-import LoginPage from './components/login_form';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import API_TEST from './components/api_test';
+import LoginPage from './components/login_page';
 import List_reverse from './components/api_list';
 import LogoutButton from './components/logout';
 import SSE from './components/sse';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/home';
-import Top_banner from './components/header';
+import ProductEdit from './components/product_edit';
 
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
+
+//import {Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
 
 
 function About() {
@@ -27,42 +31,38 @@ function About() {
 function App() {
   
   const token = sessionStorage.getItem('token');
-  console.log("App token:", token);
-  if (token && token !="" && token !='undefined')  // Check for valid token
-  {
-    console.log("User is logged in");
-    return (
- 
-    <BrowserRouter>
-      {/* Navigation */}
-      <div>
-        <Top_banner />
-      </div>
+  console.log("Token in App.js:", token);
+  const isAuthenticated = !!sessionStorage.getItem("token");
+  console.log("======================Is Authenticated:", isAuthenticated);
+  
 
-      {/* Routes */}
+return (
+ 
+    <Router>
+ 
+
+    
       <Routes>
+        {/* public route */}
+        <Route path="/login" element={<LoginPage />} />
+        {/* Protected route */}
+        <Route path="/" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
+        {/* <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} /> */}
         <Route path="/home" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/LoginPage" element={<LoginPage />} />
+        <Route path="/product_edit" element={<ProductEdit />} /> 
         <Route path="/list_reverse" element={<List_reverse />} />
         <Route path="/logout" element={<LogoutButton />} />
         <Route path="/api_test" element={<API_TEST />} />
         <Route path="/sse" element={<SSE />} />
-        <Route path="*" element={<Navigate to="/about" replace />} /> {/* Redirects any unmatched path to /404 */}
-      </Routes>
-    </BrowserRouter>
-   
-  );
-  } 
-  else //
-  {
 
-    return (
-      <div>
-        <LoginPage />  // Show login page if not logged in
-      </div>
-      );
-  }
+
+        <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redirects any unmatched path to /404 */}
+      </Routes>
+    </Router>
+   
+ 
+  );
+  
 
 
 }
