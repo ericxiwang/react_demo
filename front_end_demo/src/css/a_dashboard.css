@@ -1,0 +1,63 @@
+.a_dashboard {
+
+    padding: 10px;
+    width: 110%;
+    margin: 1%;
+    margin-left: 5%;
+    height:100%;
+    display: flex;
+    justify-content: flex-start
+
+
+
+}
+
+
+.a_dashboard_sub {
+    
+    padding: 10px;
+    width: 25%;
+    margin-right:10px;
+    height:75%;
+    border-color: #8487ec;
+    border-style: solid;
+    border-radius: 5px;
+    
+
+}
+
+.inner-scroll
+{
+overflow-y: auto;
+height:95%;
+padding-top: 20px;
+border-top: 2px solid #8487ec;
+
+}
+
+
+
+.custom-card-new {
+
+background-color: #e9cbcb;
+
+}
+
+.custom-card-inprogress {
+
+background-color: #c0d7f5;
+
+}
+
+.custom-card-review {
+
+background-color: #efeec7;
+
+}
+
+.custom-card-done {
+
+background-color: #a5e2a8;
+
+}
+

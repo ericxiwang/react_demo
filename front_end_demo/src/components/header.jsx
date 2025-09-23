@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-function Top_banner() {
+function HEADER() {
 
   if (sessionStorage.getItem('token')){
     console.log("User is logged in");
@@ -11,15 +11,18 @@ function Top_banner() {
  
       <Navbar bg="info" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+
           <Nav className="me-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/product_edit">Product Edit</Nav.Link>
-            <Nav.Link href="/LoginPage">LoginPage</Nav.Link>
-            <Nav.Link href="/list_reverse">list_reverse</Nav.Link>
+            <Nav.Link href="/a_dashboard">Agile Dashboard</Nav.Link>
+            <Nav.Link href="/a_stat">Agile Task Statistic</Nav.Link>
+            <Nav.Link href="/b_dashboard">Bug Dashboard</Nav.Link>
+            <Nav.Link href="/b_stat">Bug Statistic</Nav.Link>
+            <Nav.Link href="/u_mange">User Management</Nav.Link>
+            <Nav.Link href="/LoginPage">Login</Nav.Link>
             <Nav.Link href="/logout">logout</Nav.Link>
             <Nav.Link href="/api_test">api_test</Nav.Link>
             <Nav.Link href="/sse">sse</Nav.Link>
+            <Nav.Link href="/test">test</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -36,10 +39,9 @@ function Top_banner() {
  
       <Navbar bg="info" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+   
           <Nav className="me-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
+
             <Nav.Link href="/LoginPage">LoginPage</Nav.Link>
 
             <Nav.Link href="/logout">logout</Nav.Link>
@@ -56,4 +58,4 @@ function Top_banner() {
   
 }
 
-export default Top_banner;
+export default HEADER;

@@ -7,7 +7,7 @@ const navItems = [
     { name: 'Logout', icon: '🚪' },
 ];
 
-export default function ProEditSideBar() {
+export default function Product_page_sidebar() {
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (

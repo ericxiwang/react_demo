@@ -7,23 +7,15 @@ import LoginPage from './components/login_page';
 import List_reverse from './components/api_list';
 import LogoutButton from './components/logout';
 import SSE from './components/sse';
-import Home from './components/home';
+import A_dashboard_page from './pages/a_dashboard_page';
+import B_dashboard_page from './pages/b_dashboard_page';
 import ProductEdit from './components/product_edit';
 
+import TestPage from './components/test'
 
+import A_dashboard_workflow from './components/a_dashboard_workflow';
 //import {Routes, Route, Link, Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-
-
-
-function About() {
-  const token = sessionStorage.getItem('token');
-  if (token && token !="" && token !='undefined') {
-  return <h1>About Page</h1>;
-  } else {
-    return <h1>Please login to view this page.</h1>;
-  }
-}
 
 
 
@@ -43,20 +35,24 @@ return (
 
     
       <Routes>
-        {/* public route */}
+
+    
+        <Route path="/a_dashboard" element={<A_dashboard_page />} />
+        <Route path="/a_dashboard_workflow" element={<A_dashboard_workflow />} />
+
+
+
+
+        <Route path="/a_stat" element={<ProductEdit />} /> 
+        <Route path="/b_dashboard" element={<B_dashboard_page />} />    
+        <Route path="/b_stat" element={<List_reverse />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* Protected route */}
-        <Route path="/" element={<Navigate to={isAuthenticated ? "/home" : "/login"} />} />
-        {/* <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} /> */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/product_edit" element={<ProductEdit />} /> 
-        <Route path="/list_reverse" element={<List_reverse />} />
         <Route path="/logout" element={<LogoutButton />} />
         <Route path="/api_test" element={<API_TEST />} />
         <Route path="/sse" element={<SSE />} />
+        <Route path="/test" element={<TestPage />} />
 
-
-        <Route path="*" element={<Navigate to="/home" replace />} /> {/* Redirects any unmatched path to /404 */}
+        <Route path="*" element={<Navigate to="/a_dashoboard_page" replace />} /> {/* Redirects any unmatched path to /404 */}
       </Routes>
     </Router>
    
