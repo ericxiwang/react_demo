@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Button, Modal,Card,Form } from "react-bootstrap";
 
+import UserSelect from './widget_user_list';
+
 const statusToGroup = {
   new: "NewTickets",
   inprogress: "InProgressTickets",
@@ -19,6 +21,7 @@ export const A_dashoboard_main = () => {
     const [formData, setFormData] = useState({});
 //////////////////////////////////////////////////////////
     const [isNew, setIsNew] = useState(false);
+    
 
   const handleShowEdit = (ticket) => {
     setSelectedTicket(ticket);
@@ -83,13 +86,6 @@ export const A_dashoboard_main = () => {
        setError(error);
        setLoading(false);
      });
-
-
-
-
-
-
-
 
     }
     else {
@@ -320,6 +316,12 @@ export const A_dashoboard_main = () => {
                   <option value="done">Done</option>
                 </Form.Select>
               </Form.Group>
+            {isNew ? 
+              <Form.Group className="mb-3">
+                <Form.Label>User List</Form.Label>
+               <UserSelect />
+              </Form.Group> : null}
+              
 
 
               

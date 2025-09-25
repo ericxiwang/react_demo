@@ -12,6 +12,7 @@ import B_dashboard_page from './pages/b_dashboard_page';
 import ProductEdit from './components/product_edit';
 
 import TestPage from './components/test'
+import User_management from './pages/u_management';
 
 import A_dashboard_workflow from './components/a_dashboard_workflow';
 //import {Routes, Route, Link, Navigate } from 'react-router-dom';
@@ -41,11 +42,12 @@ return (
         <Route path="/a_dashboard_workflow" element={<A_dashboard_workflow />} />
 
 
-
+        
 
         <Route path="/a_stat" element={<ProductEdit />} /> 
         <Route path="/b_dashboard" element={<B_dashboard_page />} />    
         <Route path="/b_stat" element={<List_reverse />} />
+        <Route path="/u_management" element={<User_management />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/logout" element={<LogoutButton />} />
         <Route path="/api_test" element={<API_TEST />} />

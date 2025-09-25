@@ -1,38 +1,40 @@
-import React, { useState, useEffect } from "react";
-import UserSelect from "./widget_user_list";
-import { Button, Modal,Card,Form } from "react-bootstrap";
-function A_dashboard_workflow()
-{
+import React, { useEffect, useState } from "react";
+import { Form, Card } from "react-bootstrap";
 
+function UserSelect() {
 const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
-
-  useEffect(() => {
-     fetch('https://localhost:8080/api/v1/all_user',{method:'POST'})
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log("Data in Product Edit:", data);
+  const [error, setError] = useState(null);
+  
 
 
-    
-  })
-  .catch(error => {
-    setError(error);
-    setLoading(false);
-  });
-  }, []);
+     useEffect(() => {
+        fetch('https://localhost:8080/api/v1/all_user',{method:'POST'})
+     .then(response => {
+       if (!response.ok) {
+         throw new Error('Network response was not ok');
+       }
+       return response.json();
+     })
+     .then(data => {
+       console.log("User List:", data);
+       setUsers(data);
+   
+   
+       
+     })
+     .catch(error => {
+       setError(error);
+       setLoading(false);
+     });
+     }, []);
+
 
   const userDetails = users.find((u) => u.id.toString() === selectedUser);
 
   return (
-    <div className="p-3">
+    <div>
       <Form.Select
         value={selectedUser}
         onChange={(e) => setSelectedUser(e.target.value)}
@@ -51,7 +53,7 @@ const [users, setUsers] = useState([]);
             <Card.Title>{userDetails.user_name}</Card.Title>
             <Card.Text>
               <strong>Email:</strong> {userDetails.email} <br />
-              <strong>Group ID:</strong> {userDetails.group_id}
+              <strong>User ID:</strong> {userDetails.id}
             </Card.Text>
           </Card.Body>
         </Card>
@@ -59,6 +61,4 @@ const [users, setUsers] = useState([]);
     </div>
   );
 }
-
-
-export default A_dashboard_workflow;
+export default UserSelect;
