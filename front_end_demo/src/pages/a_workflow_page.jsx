@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col} from "react-bootstrap";
+import Badge from 'react-bootstrap/Badge';
+import ListGroup from 'react-bootstrap/ListGroup';
 import '../css/a_dashboard.css';
 
 //import { useNavigate, useLocation } from 'react-router-dom';
 import HEADER from '../components/header';  
-import A_dashboard_main from '../components/a_dashboard_main'
-import A_dashboard_workflow from '../components/a_dashboard_workflow'
+import A_workflow_badge from '../components/a_workflow_badge';
+
+
 
 import A_dashboard_sidebar from '../components/a_dashboard_sidebar'
 import { useLocation } from 'react-router-dom';
@@ -32,9 +35,17 @@ return (
             <Col md={1}>
             <A_dashboard_sidebar />
             </Col>
-            <Col md={9}>
-            <DynamicRenderer componentName="A_dashboard_main" data="some data" />
-            <DynamicRenderer componentName="A_dashboard_workflow" id={42} />
+            <Col md={11}>
+            
+           <A_workflow_badge />
+
+              
+          
+             
+           
+         
+
+            
             </Col>
         </Row>
 

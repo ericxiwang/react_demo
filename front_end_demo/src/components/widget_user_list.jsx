@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Form, Card } from "react-bootstrap";
 
-function UserSelect() {
-const [users, setUsers] = useState([]);
+function UserSelect({ onSelectChange }) {
+  const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+  /////////////////////////////////////////////////////////////////
+  const [selected, setSelected] = useState("");
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSelected(value);
+    onSelectChange(value); // pass selected value to parent
+  };
   
 
 
@@ -18,7 +28,7 @@ const [users, setUsers] = useState([]);
        return response.json();
      })
      .then(data => {
-       console.log("User List:", data);
+      // console.log("User List:", data);
        setUsers(data);
    
    
@@ -30,19 +40,18 @@ const [users, setUsers] = useState([]);
      });
      }, []);
 
+  console.log("Users fetched:", selected);
+  const userDetails = users.find((u) => u.email.toString() === selected);
 
-  const userDetails = users.find((u) => u.id.toString() === selectedUser);
+  console.log("Selected User Details:",userDetails);
 
   return (
     <div>
-      <Form.Select
-        value={selectedUser}
-        onChange={(e) => setSelectedUser(e.target.value)}
-      >
+      <Form.Select value={selected} onChange={handleChange}>
         <option value="">-- Choose a User --</option>
         {users.map((u) => (
-          <option key={u.id} value={u.id}>
-            {u.user_name}
+          <option key={u.id} value={u.email}>
+            {u.email}
           </option>
         ))}
       </Form.Select>

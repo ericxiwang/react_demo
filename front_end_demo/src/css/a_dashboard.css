@@ -61,3 +61,43 @@ background-color: #a5e2a8;
 
 }
 
+.a_card {
+    font-size: large;
+}
+
+.a_sub_card {
+    font-size: small;
+
+}
+.badge-custom {
+    background-color: #8487ec;
+    color: white;
+    font-size: 1.5em;
+    margin-right: 5px;
+    padding: 5px 10px;
+    border-radius: 15px;
+}
+.a_workflow_page {
+    padding: 10px;
+    margin: 1%;
+    margin-left: 5%;
+    height:40%;
+    display: flex;
+    justify-content: flex-start;
+ 
+}
+
+
+.a_workflow_sub_page {
+    padding: 0px;
+    margin: 3%;
+    margin-left: 5%;
+    display: flex;
+    width: 400px;
+    height:90px;
+    justify-content: flex-start;
+    border-color: #8487ec;
+
+  
+
+}

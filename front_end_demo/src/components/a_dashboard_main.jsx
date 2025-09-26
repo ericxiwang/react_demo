@@ -21,7 +21,15 @@ export const A_dashoboard_main = () => {
     const [formData, setFormData] = useState({});
 //////////////////////////////////////////////////////////
     const [isNew, setIsNew] = useState(false);
-    
+//////////////////////child callback///////////////////////////////
+
+
+    const [selectedUser, setSelectedUser] = useState("");
+    console.log("Selected User in A_dashboard_main:", selectedUser);
+
+////////////////////////////////////////////////////////////
+
+ 
 
   const handleShowEdit = (ticket) => {
     setSelectedTicket(ticket);
@@ -38,10 +46,12 @@ export const A_dashoboard_main = () => {
       desc: "",
       status: "new",
       submitter: "admin",
-      type: "task"
+      type: "task",
+      assignee: "" // Use data from child component
     });
     setIsNew(true);
     setShow(true);
+    //console.log("Data from Child in New:",dataFromChild);
   };
 
   const handleClose = () => {
@@ -51,6 +61,14 @@ export const A_dashoboard_main = () => {
   };
 
   const handleChange = (e) => {
+    console.log("E TARGET NAME:",e.target.name);
+    console.log("E TARGET VALUE:",e.target.value);
+    console.log("formData before change:",formData);
+    console.log("selectedTicket before change:",selectedTicket);
+    console.log("isNew before change:",isNew);
+    //console.log("dataFromChild before change:",dataFromChild);
+    
+      // If the
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -59,16 +77,20 @@ export const A_dashoboard_main = () => {
 
   const handleSave = () => {
     //if (!selectedTicket) return;
-
+   
     const updatedTickets = { ...tickets_data };
 
     if (isNew) {
       // Add new ticket
 
-      
+      console.log("Selected User in A_dashboard_main:>>>>>>>>>>>>>>>>>>>>>>>>", selectedUser);
+
       const groupKey = statusToGroup[formData.status];
       updatedTickets[groupKey] = [...updatedTickets[groupKey], formData];
+      
+      formData.assignee = selectedUser.toString();
       console.log("add neewwwwwwwwwwwwwwwwwwwwwwwwwwwwww",formData);
+      
       fetch('https://localhost:8080/api/v1/a_dashboard_ops/new',
       {
         method:'POST',
@@ -175,9 +197,9 @@ export const A_dashoboard_main = () => {
                 
                 <Card key={ticket.id} className="mb-3 custom-card-new">
                   <Card.Body>
-                    <Card.Title>{ticket.title}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {ticket.type.toUpperCase()} | By: {ticket.submitter}  | Assignee: {ticket.assignee}
+                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted a_sub_card" style={{ fontSize: '0.8rem' }}>
+                      {ticket.type.toUpperCase()} | By: {ticket.submitter}  | <h8>Assignee: {ticket.assignee}</h8>
                     </Card.Subtitle>
                     <Button variant="danger" size="sm" onClick={() => handleShowEdit(ticket)}>
                       Details
@@ -196,8 +218,8 @@ export const A_dashoboard_main = () => {
     
                 <Card key={ticket.id} className="mb-3 custom-card-inprogress">
                   <Card.Body>
-                    <Card.Title>{ticket.title}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted  a_sub_card">
                       {ticket.type} | By: {ticket.submitter}
                     </Card.Subtitle>
                     <Button variant="info" size="sm" onClick={() => handleShowEdit(ticket)}>
@@ -217,8 +239,8 @@ export const A_dashoboard_main = () => {
                 
                 <Card key={ticket.id} className="mb-3 custom-card-review">
                   <Card.Body>
-                    <Card.Title>{ticket.title}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted  a_sub_card">
                       {ticket.type} | By: {ticket.submitter}
                     </Card.Subtitle>
                     <Button variant="warning" size="sm" onClick={() => handleShowEdit(ticket)}>
@@ -238,8 +260,8 @@ export const A_dashoboard_main = () => {
                 
                 <Card key={ticket.id} className="mb-3 custom-card-done">
                   <Card.Body>
-                    <Card.Title>{ticket.title}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted  a_sub_card">
                       {ticket.type} | By: {ticket.submitter}
                     </Card.Subtitle>
                     <Button variant="success" size="sm" onClick={() => handleShowEdit(ticket)}>
@@ -297,8 +319,8 @@ export const A_dashoboard_main = () => {
                   value={formData.type || ""}
                   onChange={handleChange}
                 >
-                  <option value="bug">Bug</option>
                   <option value="task">Task</option>
+                  <option value="bug">Bug</option>  
                   <option value="story">Story</option>
                 </Form.Select>
               </Form.Group>
@@ -319,10 +341,12 @@ export const A_dashoboard_main = () => {
             {isNew ? 
               <Form.Group className="mb-3">
                 <Form.Label>User List</Form.Label>
-               <UserSelect />
+               <UserSelect  onSelectChange={setSelectedUser}/>
               </Form.Group> : null}
-              
 
+             
+              
+              
 
               
             </Form>

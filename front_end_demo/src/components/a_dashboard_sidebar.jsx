@@ -10,7 +10,7 @@ function A_dashboard_sidebar() {
 
       <Nav className="flex-column">
         <Nav.Link href="/a_dashboard" className="text-white">Dashboard</Nav.Link>
-        <Nav.Link href="/a_dashboard_workflow" className="text-white">WorkFlow</Nav.Link>
+        <Nav.Link href="/a_workflow" className="text-white">WorkFlow</Nav.Link>
         <Nav.Link href="/project" className="text-white">Project</Nav.Link>
        
       </Nav>
