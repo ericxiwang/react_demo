@@ -3,17 +3,13 @@ import { Container, Row, Col} from "react-bootstrap";
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import '../css/a_dashboard.css';
-
 //import { useNavigate, useLocation } from 'react-router-dom';
 import HEADER from '../components/header';  
 import A_workflow_badge from '../components/a_workflow_badge';
-
-
-
 import A_dashboard_sidebar from '../components/a_dashboard_sidebar'
 import { useLocation } from 'react-router-dom';
 
-
+import { A_workflow_main } from '../components/a_workflow_main';
 
 
 export const  A_dashboard_page = () => {
@@ -37,7 +33,9 @@ return (
             </Col>
             <Col md={11}>
             
-           <A_workflow_badge />
+           <div><A_workflow_badge /></div>
+           <div><A_workflow_main /></div>
+
 
               
           

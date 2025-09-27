@@ -28,7 +28,8 @@ export const A_dashoboard_main = () => {
     console.log("Selected User in A_dashboard_main:", selectedUser);
 
 ////////////////////////////////////////////////////////////
-
+////////////////////validation///////////////////////////////
+    const [validated, setValidated] = useState(false);
  
 
   const handleShowEdit = (ticket) => {
@@ -41,13 +42,14 @@ export const A_dashoboard_main = () => {
   const handleShowNew = () => {
     setSelectedTicket(null);
     setFormData({
-      id: Date.now(), // unique ID
-      title: "",
-      desc: "",
-      status: "new",
-      submitter: "admin",
-      type: "task",
-      assignee: "" // Use data from child component
+      ticket_id: Date.now(), // unique ID
+      ticket_title: "",
+      ticket_desc: "",
+      ticket_status: "new",
+      ticket_submitter: "admin",
+      ticket_type: "task",
+      ticket_assignee: "", // Use data from child component
+      ticket_datetime: (new Date()).toDateString() // current timestamp
     });
     setIsNew(true);
     setShow(true);
@@ -75,20 +77,29 @@ export const A_dashoboard_main = () => {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = (event) => {
     //if (!selectedTicket) return;
-   
-    const updatedTickets = { ...tickets_data };
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    else
+      {
+         setValidated(true);
+             const updatedTickets = { ...tickets_data };
 
     if (isNew) {
       // Add new ticket
 
       console.log("Selected User in A_dashboard_main:>>>>>>>>>>>>>>>>>>>>>>>>", selectedUser);
 
-      const groupKey = statusToGroup[formData.status];
+      const groupKey = statusToGroup[formData.ticket_status];
       updatedTickets[groupKey] = [...updatedTickets[groupKey], formData];
       
-      formData.assignee = selectedUser.toString();
+      formData.ticket_assignee = selectedUser.toString();
+ 
       console.log("add neewwwwwwwwwwwwwwwwwwwwwwwwwwwwww",formData);
       
       fetch('https://localhost:8080/api/v1/a_dashboard_ops/new',
@@ -114,16 +125,16 @@ export const A_dashoboard_main = () => {
 
     // find old group
     const oldGroupKey = Object.keys(updatedTickets).find((key) =>
-      updatedTickets[key].some((t) => t.id === selectedTicket.id)
+      updatedTickets[key].some((t) => t.ticket_id === selectedTicket.ticket_id)
     );
 
     // remove from old group
     updatedTickets[oldGroupKey] = updatedTickets[oldGroupKey].filter(
-      (t) => t.id !== selectedTicket.id
+      (t) => t.ticket_id !== selectedTicket.ticket_id
     );
 
     // add to new group
-    const newGroupKey = statusToGroup[formData.status];
+    const newGroupKey = statusToGroup[formData.ticket_status];
 
     updatedTickets[newGroupKey] = [...updatedTickets[newGroupKey], formData];
 
@@ -148,6 +159,15 @@ export const A_dashoboard_main = () => {
      });
 
     }
+      }
+
+   
+
+
+
+
+   
+
   };
 
 
@@ -195,15 +215,16 @@ export const A_dashoboard_main = () => {
               {tickets_data && tickets_data.NewTickets.map((ticket) => (
                 
                 
-                <Card key={ticket.id} className="mb-3 custom-card-new">
+                <Card key={ticket.ticket_id} className="mb-3 custom-card-new">
                   <Card.Body>
-                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Title className="a_card">{ticket.ticket_title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted a_sub_card" style={{ fontSize: '0.8rem' }}>
-                      {ticket.type.toUpperCase()} | By: {ticket.submitter}  | <h8>Assignee: {ticket.assignee}</h8>
+                      {ticket.ticket_type.toUpperCase()} | By: {ticket.ticket_submitter}  | Assignee: {ticket.ticket_assignee}
                     </Card.Subtitle>
                     <Button variant="danger" size="sm" onClick={() => handleShowEdit(ticket)}>
                       Details
                     </Button>
+                    <text className="mb-2 text-muted  a_sub_card"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created: {ticket.ticket_datetime}</text>
                   </Card.Body>
                 </Card>
               
@@ -216,15 +237,18 @@ export const A_dashoboard_main = () => {
             <div className = 'inner-scroll'>
               {tickets_data && tickets_data.InProgressTickets.map((ticket) => (
     
-                <Card key={ticket.id} className="mb-3 custom-card-inprogress">
+                <Card key={ticket.ticket_id} className="mb-3 custom-card-inprogress">
                   <Card.Body>
-                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Title className="a_card">{ticket.ticket_title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted  a_sub_card">
-                      {ticket.type} | By: {ticket.submitter}
+                      {ticket.ticket_type} | By: {ticket.ticket_submitter}
                     </Card.Subtitle>
                     <Button variant="info" size="sm" onClick={() => handleShowEdit(ticket)}>
                       Details
                     </Button>
+                    <text className="mb-2 text-muted  a_sub_card"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created: {ticket.ticket_datetime}</text>
+                    
+                    
                   </Card.Body>
                 </Card>
               
@@ -237,15 +261,16 @@ export const A_dashoboard_main = () => {
               {tickets_data && tickets_data.ReviewTickets.map((ticket) => (
                 
                 
-                <Card key={ticket.id} className="mb-3 custom-card-review">
+                <Card key={ticket.ticket_id} className="mb-3 custom-card-review">
                   <Card.Body>
-                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Title className="a_card">{ticket.ticket_title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted  a_sub_card">
-                      {ticket.type} | By: {ticket.submitter}
+                      {ticket.ticket_type} | By: {ticket.ticket_submitter}
                     </Card.Subtitle>
                     <Button variant="warning" size="sm" onClick={() => handleShowEdit(ticket)}>
                       Details
                     </Button>
+                    <text className="mb-2 text-muted  a_sub_card"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created: {ticket.ticket_datetime}</text>
                   </Card.Body>
                 </Card>
               
@@ -258,15 +283,16 @@ export const A_dashoboard_main = () => {
               {tickets_data && tickets_data.DoneTickets.map((ticket) => (
                 
                 
-                <Card key={ticket.id} className="mb-3 custom-card-done">
+                <Card key={ticket.ticket_id} className="mb-3 custom-card-done">
                   <Card.Body>
-                    <Card.Title className="a_card">{ticket.title}</Card.Title>
+                    <Card.Title className="a_card">{ticket.ticket_title}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted  a_sub_card">
-                      {ticket.type} | By: {ticket.submitter}
+                      {ticket.ticket_type} | By: {ticket.ticket_submitter}
                     </Card.Subtitle>
                     <Button variant="success" size="sm" onClick={() => handleShowEdit(ticket)}>
                       Details
                     </Button>
+                    <text className="mb-2 text-muted  a_sub_card"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created: {ticket.ticket_datetime}</text>
                   </Card.Body>
                 </Card>
               
@@ -287,27 +313,31 @@ export const A_dashoboard_main = () => {
         </Modal.Header>
         <Modal.Body>
           {formData && (
-            <Form>
+            <Form noValidate validated={validated}>
               <div >
-                <input type='hidden' defaultValue={formData.id}></input>
+                <input type='hidden' defaultValue={formData.ticket_id}></input>
               </div>
               <Form.Group className="mb-3">
                 <Form.Label>Title</Form.Label>
                 <Form.Control
                   type="text"
-                  name="title"
-                  value={formData.title || ""}
+                  name="ticket_title"
+                  value={formData.ticket_title || ""}
                   onChange={handleChange}
+                  required
                 />
+                <Form.Control.Feedback type="invalid">
+                Please input a title.
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group className="mb-3">
                 <Form.Label>Description</Form.Label>
                 <Form.Control
                   as="textarea"
-                  name="desc"
+                  name="ticket_desc"
                   rows={3}
-                  value={formData.desc || ""}
+                  value={formData.ticket_desc || ""}
                   onChange={handleChange}
                 />
               </Form.Group>
@@ -315,8 +345,8 @@ export const A_dashoboard_main = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Type</Form.Label>
                 <Form.Select
-                  name="type"
-                  value={formData.type || ""}
+                  name="ticket_type"
+                  value={formData.ticket_type || ""}
                   onChange={handleChange}
                 >
                   <option value="task">Task</option>
@@ -328,8 +358,8 @@ export const A_dashoboard_main = () => {
               <Form.Group className="mb-3">
                 <Form.Label>Status</Form.Label>
                 <Form.Select
-                  name="status"
-                  value={formData.status || ""}
+                  name="ticket_status"
+                  value={formData.ticket_status || ""}
                   onChange={handleChange}
                 >
                   <option value="new">New</option>
@@ -352,6 +382,7 @@ export const A_dashoboard_main = () => {
             </Form>
           )}
         </Modal.Body>
+        <text className="mb-2 text-muted  a_sub_card"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created: {formData.ticket_datetime}</text>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel

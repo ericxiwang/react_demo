@@ -47,7 +47,7 @@ function UserSelect({ onSelectChange }) {
 
   return (
     <div>
-      <Form.Select value={selected} onChange={handleChange}>
+      <Form.Select value={selected} onChange={handleChange} required>
         <option value="">-- Choose a User --</option>
         {users.map((u) => (
           <option key={u.id} value={u.email}>
