@@ -2,7 +2,7 @@
   "name": "front_end_demo",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://127.0.0.1:8080",
+  "proxy": "https://localhost:8080",
   "dependencies": {
     "@mui/x-data-grid": "^8.11.3",
     "@testing-library/dom": "^10.4.1",

@@ -53,7 +53,8 @@ return (
         <Route path="/sse" element={<SSE />} />
         <Route path="/test" element={<TestPage />} />
 
-        <Route path="*" element={<Navigate to="/a_dashoboard_page" replace />} /> {/* Redirects any unmatched path to /404 */}
+        <Route path="*" element={<Navigate to="/a_dashboard" replace />} /> {/* Redirects any unmatched path to /404 */}
+        <Route path="/" element={<Navigate to="/a_dashboard" replace />} /> {/* Redirects any unmatched path to /404 */}
       </Routes>
     </Router>
    

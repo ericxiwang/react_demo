@@ -41,12 +41,16 @@ function HEADER() {
         <Container>
    
           <Nav className="me-auto">
-
-            <Nav.Link href="/LoginPage">LoginPage</Nav.Link>
-
+            <Nav.Link href="/a_dashboard">Agile Dashboard</Nav.Link>
+            <Nav.Link href="/a_stat">Agile Task Statistic</Nav.Link>
+            <Nav.Link href="/b_dashboard">Bug Dashboard</Nav.Link>
+            <Nav.Link href="/b_stat">Bug Statistic</Nav.Link>
+            <Nav.Link href="/u_management">User Management</Nav.Link>
+            <Nav.Link href="/LoginPage">Login</Nav.Link>
             <Nav.Link href="/logout">logout</Nav.Link>
-
-
+            <Nav.Link href="/api_test">api_test</Nav.Link>
+            <Nav.Link href="/sse">sse</Nav.Link>
+            <Nav.Link href="/test">test</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

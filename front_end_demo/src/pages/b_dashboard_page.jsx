@@ -3,13 +3,42 @@ import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from "react-b
 import HEADER from '../components/header'; 
 import B_dashboard_main from '../components/b_dashboard_main'
 //import A_dashboard_sidebar from '../components/a_dashboard_sidebar'
+import Project_list from '../components/project_list'
 
 
 function B_dashboard_page()
 {
+const  [project_list, setProject_list] = useState([]);
+const [selected, setSelected] = useState([]); 
+const getProject_list = async () => {
+    try {
+        const projects = await Project_list();
+        const project_list = projects;
+        setProject_list(project_list);
+    } catch (error) {
+        console.error("Error fetching projects in B_dashboard_page:", error);
+    }
+};
 
+useEffect(() => {
+    getProject_list();
+    
+}, []);
 
- 
+const handleChange = (id) => {
+    setSelected((prev) =>
+      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAll = () => {
+    setSelected(project_list.map((p) => p.project_id));
+  };
+
+  const handleClearAll = () => {
+    setSelected([]);
+  };
+
 
     return(
 <Container fluid>
@@ -18,7 +47,52 @@ function B_dashboard_page()
         </Row>
         <Row>
             <Col md={2}>
-         
+            <Card className="m-3 shadow-sm">
+      <Card.Body>
+        <Card.Title>Projects</Card.Title>
+        <Form>
+          {project_list && project_list.map((p) => (
+            <Form.Check
+              key={p.project_id}
+              type="checkbox"
+              id={`project-${p.project_id}`}
+              label={`${p.project_name} (id: ${p.project_id})`}
+              checked={selected.includes(p.project_id)}
+              onChange={() => handleChange(p.project_id)}
+              className="mb-2"
+            />
+          ))}
+        </Form>
+
+        <div className="mt-3">
+          <Button variant="primary" onClick={handleSelectAll} className="me-2">
+            Select All
+          </Button>
+          <Button variant="secondary" onClick={handleClearAll}>
+            Clear All
+          </Button>
+        </div>
+          {console.log(JSON.stringify(
+                project_list.filter((p) => selected.includes(p.project_id)),
+                null,
+                2
+              ))}
+       {/*} <Card className="mt-4 bg-light">
+          <Card.Body>
+            <Card.Subtitle className="mb-2 text-muted">
+              Selected Projects
+            </Card.Subtitle>
+            <pre className="mb-0">
+              {JSON.stringify(
+                project_list.filter((p) => selected.includes(p.project_id)),
+                null,
+                2
+              )}
+            </pre>
+          </Card.Body>
+        </Card>*/}
+      </Card.Body>
+    </Card>
             </Col>
             <Col md={9}>
             <B_dashboard_main />

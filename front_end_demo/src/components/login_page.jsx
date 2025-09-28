@@ -17,7 +17,8 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://localhost:8080/api/v1/auth", {
+      const response = await fetch("https://localhost:8080/api/v1/auth", 
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_name:username, user_password:password }),
@@ -35,7 +36,9 @@ function LoginPage() {
         console.log("Token stored in sessionStorage:", data.access_token);
         setSuccess(true);
         navigate("/a_dashboard"); // Redirect to home page after successful login
-      } else {
+      } 
+      else 
+        {
         throw new Error("Token not found in response");
       }
     } catch (err) {
