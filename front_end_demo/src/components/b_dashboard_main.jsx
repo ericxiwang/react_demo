@@ -5,17 +5,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 //import Product_cate_edit from './product_edit'
 
-export const  B_dashboard_main = () => {
+export const  B_dashboard_main = (props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);   
     const navigate = useNavigate();
     const location = useLocation();
-    const keywords = ["1","2","3"];
-
-
-
-
+    const keywords = props.project_list_select;
 
 
 
@@ -44,7 +40,7 @@ export const  B_dashboard_main = () => {
             setLoading(false);
         });
          
-       }, []);
+       }, [keywords]);
 
 
 ///////////////////////////////////////////
