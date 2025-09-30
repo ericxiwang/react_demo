@@ -24,20 +24,20 @@ useEffect(() => {
     
 }, []);
 
-const handleChange = (id) => {
+const handleChange = (project_name) => {
     setSelected((prev) =>
-      prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id]
+      prev.includes(project_name) ? prev.filter((p) => p !== project_name) : [...prev, project_name]
     );
   };
 
   const handleSelectAll = () => {
-    setSelected(project_list.map((p) => p.project_id));
+    setSelected(project_list.map((p) => p.project_name));
   };
 
   const handleClearAll = () => {
     setSelected([]);
   };
-
+  console.log("Selected projects:", selected);
 
     return(
 <Container fluid>
@@ -56,12 +56,12 @@ const handleChange = (id) => {
               <Form>
                 {project_list && project_list.map((p) => (
                   <Form.Check
-                    key={p.project_id}
+                    key={p.project_name}
                     type="checkbox"
-                    id={`project-${p.project_id}`}
+                    id={`project-${p.project_name}`}
                     label={`${p.project_name} (id: ${p.project_id})`}
-                    checked={selected.includes(p.project_id)}
-                    onChange={() => handleChange(p.project_id)}
+                    checked={selected.includes(p.project_name)}
+                    onChange={() => handleChange(p.project_name)}
                     className="mb-2"
                   />
                 ))}
@@ -78,7 +78,7 @@ const handleChange = (id) => {
 
               
               <div className="mt-3">
-                <New_bug_form />
+                <New_bug_form NewBug={true}/>
                
               
               </div>
