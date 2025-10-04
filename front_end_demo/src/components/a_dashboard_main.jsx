@@ -13,6 +13,7 @@ const statusToGroup = {
 };
 
 export const A_dashoboard_main = () => {
+   console.log("show token=====",sessionStorage.getItem("token"))
     const [tickets_data, setTickets] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -105,7 +106,7 @@ export const A_dashoboard_main = () => {
       fetch('https://localhost:8080/api/v1/a_dashboard_ops/new',
       {
         method:'POST',
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json"},
         body: JSON.stringify(formData),
       })
       .then(response =>{
@@ -160,20 +161,18 @@ export const A_dashoboard_main = () => {
 
     }
       }
-
-   
-
-
-
-
-   
-
   };
 
-
-
    useEffect(() => {
-     fetch('https://localhost:8080/api/v1/a_dashboard_main',{method:'POST'})
+   
+     fetch('https://localhost:8080/api/v1/a_dashboard_main',{
+      method:'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+      },
+       mode: "cors"
+     })
      .then(response => {
        if (!response.ok) {
          throw new Error('Network response was not ok');

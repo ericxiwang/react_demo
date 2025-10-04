@@ -22,45 +22,49 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 
 function App() {
   
-  const token = sessionStorage.getItem('token');
-  console.log("Token in App.js:", token);
+  //const token = sessionStorage.getItem('token');
+  //console.log("Token in App.js:", token);
   const isAuthenticated = !!sessionStorage.getItem("token");
   console.log("======================Is Authenticated:", isAuthenticated);
-  
+
+const ProtectedRoute = ({ children }) => {
+  if (!isAuthenticated) {
+    // Redirect to login if not authenticated
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 return (
  
-    <Router>
- 
-
     
       <Routes>
 
-    
-        <Route path="/a_dashboard" element={<A_dashboard_page />} />
-        <Route path="/a_workflow" element={<A_workflow_page />} />
-
-
-        
-
-        <Route path="/a_stat" element={<ProductEdit />} /> 
-        <Route path="/b_dashboard" element={<B_dashboard_page />} />    
-        <Route path="/b_stat" element={<List_reverse />} />
-        <Route path="/u_management" element={<User_management />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/logout" element={<LogoutButton />} />
-        <Route path="/api_test" element={<API_TEST />} />
-        <Route path="/sse" element={<SSE />} />
-        <Route path="/test" element={<TestPage />} />
+        
+        
+       
+          <Route path="/a_dashboard" element={<A_dashboard_page />} />
+          <Route path="/a_workflow" element={ <ProtectedRoute><A_workflow_page /></ProtectedRoute>} />
+          <Route path="/a_stat" element={<ProtectedRoute><ProductEdit /></ProtectedRoute>} /> 
+          <Route path="/b_dashboard" element={<ProtectedRoute><B_dashboard_page /></ProtectedRoute>} />    
+          <Route path="/b_stat" element={<ProtectedRoute><List_reverse /></ProtectedRoute>} />
+          <Route path="/u_management" element={<User_management />} />      
+          <Route path="/logout" element={<LogoutButton />} />
+          <Route path="/api_test" element={<API_TEST />} />
+          <Route path="/sse" element={<SSE />} />
+          <Route path="/test" element={<TestPage />} />
+          <Route path="*" element={<Navigate to="/a_dashboard" replace />} /> {/* Redirects any unmatched path to /404 */}
+          <Route path="/" element={<Navigate to="/a_dashboard" replace />} /> {/* Redirects any unmatched path to /404 */}
+    
 
-        <Route path="*" element={<Navigate to="/a_dashboard" replace />} /> {/* Redirects any unmatched path to /404 */}
-        <Route path="/" element={<Navigate to="/a_dashboard" replace />} /> {/* Redirects any unmatched path to /404 */}
+
       </Routes>
-    </Router>
+
    
  
   );
-  
+
 
 
 }

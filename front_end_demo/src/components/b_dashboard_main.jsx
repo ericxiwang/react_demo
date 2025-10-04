@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Form, Button, Alert, Spinner, Table } from "
 import { useNavigate, useLocation } from 'react-router-dom';
 
 //import Product_cate_edit from './product_edit'
-
+import New_bug_form from '../components/b_new_bugform';
 export const  B_dashboard_main = (props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,8 +12,17 @@ export const  B_dashboard_main = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
     const keywords = props.project_list_select;
+    const [isNewBug, setIsNewBug] = useState(false);
+    const [show, setShow] = useState(false);
 
+const Edit_bug_form = (e) => {
+      console.log("Edit_bug Clicked!");
+      console.log(isNewBug);
+      setShow(true);
+      setIsNewBug(true);
 
+      console.log("show form",show);
+    }
 
     useEffect(() => {
        fetch("https://localhost:8080/api/v1/b_dashboard_main", {
@@ -123,12 +132,15 @@ return (
             <th>Status</th>
             <th>Project</th>
             <th>Assignee</th>
+            <th>Datetime</th>
           </tr>
         </thead>
         <tbody>
           {filteredBugs.map((bug) => (
             <tr key={bug.bug_id}>
-              <td>{bug.bug_id}</td>
+
+              {/*///////////////////////////////////button onclick//////////////////////////////////////////// */}
+              <td><Button variant="outline-primary" size="sm" onClick={Edit_bug_form}>{bug.bug_id}</Button></td>
               <td>{bug.bug_title}</td>
               <td>{bug.bug_desc}</td>
               <td>{bug.bug_category}</td>
@@ -136,6 +148,7 @@ return (
               <td>{bug.bug_status}</td>
               <td>{bug.bug_project}</td>
               <td>{bug.bug_assignee}</td>
+              <td>{bug.bug_datetime}</td>
             </tr>
           ))}
           {filteredBugs.length === 0 && (
@@ -147,6 +160,14 @@ return (
           )}
         </tbody>
       </Table>
+
+
+
+          <div>
+          {isNewBug && <New_bug_form NewBug={false} FormShow={true}/>}
+        
+     
+          </div>
     </div>
 
 );

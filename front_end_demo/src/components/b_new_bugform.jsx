@@ -7,23 +7,25 @@ import { Form } from "react-bootstrap";
 import User_list from './user_list';
 import Project_list from './project_list';
 
-const New_bug_form = ({NewBug}) => {
+const New_bug_form = ({NewBug,FormShow}) => {
   console.log("New Bug Form Props:",NewBug);
   
+
+
   const [bug_formData, setBug_formData] = useState({
     id: "",
     bug_title: "",
     bug_desc: "",
     bug_status: "new",
     bug_level: "low",
-    bug_assignee: "admin",
-    bug_category: "General",
-    bug_project: "General",
+    bug_assignee: "",
+    bug_category: "",
+    bug_project: "",
     bug_datetime: (new Date()).toDateString()
   });
   const [loading, setLoading] = useState(true);
-      const [error, setError] = useState(null);
-  const [show, setShow] = useState(false);
+  const [error, setError] = useState(null);
+  const [show, setShow] = useState(FormShow);
   const [user_list, setUser_list] = useState([]);
   const [project_list, setProject_list] = useState([]);
   const [selected_user, setSelected_user] = useState("");
@@ -165,9 +167,10 @@ const handleSubmit = (e) => {
 
   return (
     <>
-      <Button variant="warning" onClick={handleShow}>
+      {isNewBug && <Button variant="warning" onClick={handleShow}>
         Create New Bug Ticket
-      </Button>
+      </Button>}
+      
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -268,8 +271,6 @@ const handleSubmit = (e) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-
-          {}
           <Button variant="primary" onClick={handleSubmit}>
             {NewBug ? "Add New Bug" : "Save Changes"}
           </Button>
@@ -280,6 +281,7 @@ const handleSubmit = (e) => {
 
         </Modal.Footer>
       </Modal>
+      <div>test{show}</div>
     </>
   );
 };

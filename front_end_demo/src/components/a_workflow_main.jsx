@@ -48,7 +48,12 @@ export const  A_workflow_main = () => {
      
         fetch(`https://localhost:8080/api/v1/a_workflow_ticketlist/${selectedEmail}`,
             {
-                method:'GET'
+                method:'GET',
+                headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+              },
+              mode: "cors"
             })
          .then(response => {
            if (!response.ok) {
