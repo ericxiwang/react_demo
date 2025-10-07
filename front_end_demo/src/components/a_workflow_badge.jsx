@@ -11,7 +11,7 @@ export default function A_workflow_badge() {
     const [error, setError] = useState(null);
     
      useEffect(() => {
-            fetch('https://localhost:8080/api/v1/a_workflow_badge',{method:'POST'})
+            fetch('/api/v1/a_workflow_badge',{method:'POST'})
          .then(response => {
            if (!response.ok) {
              throw new Error('Network response was not ok');
@@ -21,11 +21,7 @@ export default function A_workflow_badge() {
          .then(data => {
             console.log("User List:", data);
             setCount(data);
-     
-
        
-       
-           
          })
          .catch(error => {
            setError(error);

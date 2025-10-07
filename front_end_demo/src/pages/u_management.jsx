@@ -1,187 +1,288 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from "react-bootstrap";
-import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Table, Button, Modal, Form } from "react-bootstrap";
+import Header from "../components/header";
 
-import HEADER from '../components/header'; 
-//import ProEditSideBar from './pro_edit_side_bar';
-import Table from 'react-bootstrap/Table';
-import { Nav } from 'react-bootstrap';
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showAdd, setShowAdd] = useState(false);
+  const [editUser, setEditUser] = useState(null);
+  const [formData, setFormData] = useState({
+    id: "",
+    user_name: "",
+    email: "",
+    group_id: "",
+  });
 
+  const [newUser, setNewUser] = useState({
+    user_name: "",
+    email: "",
+    group_id: 1,
+    user_password: "",
+  });
 
-
-
-
-function User_management() {
-
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [cate_name, setCate_name] = useState("");
-    const [cate_desc, setCate_desc] = useState("");
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [page_reload, setPage_reload] = useState(true);
-  
-
-    ///////////////////////////////////////////
-    const [dataFromChild, setDataFromChild] = useState('');
-
-    const handleChildData = (data) => {
-      setDataFromChild(data);
-    };
-
-
-
-    ///////////////////////////////////////////
-  
-
+  // ✅ Fetch users from Flask API
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("/api/v1/user_ops/all", { method: "GET" });
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Unable to load users");
+    }
+  };
 
   useEffect(() => {
-    fetch('https://localhost:8080/api/v1/all_user',{method:'POST'})
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log("Data in Product Edit:", data);
-    setData(data);
-    setLoading(false);
-    setPage_reload(true); // Set to true after data is loaded, allowing re-fetch if needed
+    fetchUsers();
+  }, []);
 
-    
-  })
-  .catch(error => {
-    setError(error);
-    setLoading(false);
-  }); 
-  }, [page_reload]);
+  // =============================
+  // Edit handlers
+  // =============================
+  const handleEdit = (user) => {
+    setEditUser(user);
+    setFormData(user);
+    setShowEdit(true);
+  };
 
-    const Add_new_item = () => {
-  
-      fetch('https://localhost:8080/api/v1/product_cate_list/add',
-        {
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleEditSave = async () => {
+    try {
+      const res = await fetch("/api/v1/user_ops/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({"new_cate":[{ name:cate_name, description: cate_desc }]}),
-      }).then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log("Add new item response:", data);
-        setPage_reload(false);
-        console.log(page_reload); // Toggle to trigger useEffect
-    
-        
-      // Optionally, refresh the list or give feedback to the user here
-      // window.location.reload();
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error);
-        setLoading(false);
+        body: JSON.stringify(formData),
       });
-      
-        console.log("Add new item clicked");
-        
-      };
+      if (res.ok) {
+        await fetchUsers();
+        setShowEdit(false);
+      } else {
+        alert("Failed to update user");
+      }
+    } catch (err) {
+      console.error("Update error:", err);
+    }
+  };
 
+  // =============================
+  // Delete handler
+  // =============================
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this user?")) return;
+    try {
+      const res = await fetch("/api/v1/user_ops/delete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setUsers(users.filter((u) => u.id !== id));
+      } else {
+        alert("Failed to delete user");
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
 
+  // =============================
+  // Add user handlers
+  // =============================
+  const handleAddUser = () => {
+    setNewUser({ user_name: "", email: "", group_id: 1, user_password: "" });
+    setShowAdd(true);
+  };
 
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser({ ...newUser, [name]: value });
+  };
 
+  const handleAddSave = async () => {
+    try {
+      const res = await fetch("/api/v1/user_ops/new", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUser),
+      });
+      if (res.ok) {
+        setShowAdd(false);
+        await fetchUsers();
+      } else {
+        alert("Failed to add user");
+      }
+    } catch (err) {
+      console.error("Add error:", err);
+    }
+  };
 
-  const columns = data && data.length > 0 ? Object.keys(data[0]) : [];
-  console.log("Columns:", columns);
   return (
+    <div>
+      <Header />
+      <div className="container mt-4">
+        <h3 className="mb-3">User List</h3>
 
+        {/* Add User Button */}
+        <Button variant="success" className="mb-3" onClick={handleAddUser}>
+          ➕ Add User
+        </Button>
 
-    <Container fluid>
-      <Row>
-        <HEADER />
-      </Row>
-
-      <Row>
-  
-        <Col>
-          <div>
-          <h2>Cate_list</h2>
-        
-          <Table bordered>
-      
-              <thead>
-                <tr>
-                {columns && Array.isArray(columns) && columns.map(col => (
-                  <th key={col} style={{border: "1px solid #ddd", padding: "8px",background: "#f4f4f4"}}>{col.toLocaleUpperCase()}</th>
-                ))}
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User Name</th>
+              <th>Email</th>
+              <th>Group ID</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  No users found
+                </td>
+              </tr>
+            ) : (
+              users.map((u) => (
+                <tr key={u.id}>
+                  <td>{u.id}</td>
+                  <td>{u.user_name}</td>
+                  <td>{u.email}</td>
+                  <td>{u.group_id}</td>
+                  <td>
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      className="me-2"
+                      onClick={() => handleEdit(u)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDelete(u.id)}
+                    >
+                      Delete
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-              { data && data.map((row) => (
-                <tr key={row.id}>
-                  {columns.map((col) => (
-                    <td key={col} style={{ border: "1px solid #ddd", padding: "8px" }}>
-                      {typeof row[col] === "object" && row[col] !== null
-                        ? JSON.stringify(row[col])
-                        : row[col] ?? "-"}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+              ))
+            )}
           </tbody>
-          </Table>     
-        </div> 
-        </Col>
-        <Col xs={4}>
-        <Form>
-                        <Form.Group className="mb-3" controlId="formCate_name">
-                          <Form.Label>cate_name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter cate name"
-                            value={cate_name}
-                            onChange={(e) => setCate_name(e.target.value)}
-                            required
-                          />
-                        </Form.Group>
-        
-                        <Form.Group className="mb-3" controlId="formCate_desc">
-                          <Form.Label>cate_desc</Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter description"
-                            value={cate_desc}
-                            onChange={(e) => setCate_desc(e.target.value)}
-                            required
-                          />
-                        </Form.Group>
-        
-                        <div className="d-grid">
-                          <Button onClick={() => Add_new_item()}>Edit</Button>
-                        </div>
-        </Form>
+        </Table>
 
-        {/*
-        <Form.Label>cate_name</Form.Label>
-        <Form.Control type="text" placeholder="Category Name" value={cate_name} onChange={(e) => setCate_name(e.target.value)} />
-        <br />
-        <Form.Label>cate_desc</Form.Label>
-        <Form.Control type="text" placeholder="Category Description" value={cate_desc} onChange={(e) => setCate_desc(e.target.value)} />
-        <br />
-        <button onClick={() => Add_new_item()}>Edit</button>
-        */}
-        </Col>
-      </Row>
+        {/* 🪟 Edit Modal */}
+        <Modal show={showEdit} onHide={() => setShowEdit(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit User</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-2">
+                <Form.Label>User Name</Form.Label>
+                <Form.Control
+                  name="user_name"
+                  value={formData.user_name}
+                  onChange={handleEditChange}
+                />
+              </Form.Group>
 
-      
-        
-     
-    </Container>
+              <Form.Group className="mb-2">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleEditChange}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-2">
+                <Form.Label>Group ID</Form.Label>
+                <Form.Control
+                  name="group_id"
+                  type="number"
+                  value={formData.group_id}
+                  onChange={handleEditChange}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowEdit(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleEditSave}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* 🪟 Add Modal */}
+        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add New User</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-2">
+                <Form.Label>User Name</Form.Label>
+                <Form.Control
+                  name="user_name"
+                  value={newUser.user_name}
+                  onChange={handleAddChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  name="email"
+                  type="email"
+                  value={newUser.email}
+                  onChange={handleAddChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>Group ID</Form.Label>
+                <Form.Control
+                  name="group_id"
+                  type="number"
+                  value={newUser.group_id}
+                  onChange={handleAddChange}
+                />
+              </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  name="user_password"
+                  type="password"
+                  value={newUser.user_password}
+                  onChange={handleAddChange}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowAdd(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={handleAddSave}>
+              Add
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    </div>
   );
-}   
+}
 
-
-export default User_management;
+export default UserList;

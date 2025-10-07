@@ -1,6 +1,6 @@
 export default async function Project_list() {
     try {
-    const response = await fetch('https://localhost:8080/api/v1/project_info', {   
+    const response = await fetch('/api/v1/project_info', {   
         method: 'GET',
     }
     );

@@ -103,7 +103,7 @@ export const A_dashoboard_main = () => {
  
       console.log("add neewwwwwwwwwwwwwwwwwwwwwwwwwwwwww",formData);
       
-      fetch('https://localhost:8080/api/v1/a_dashboard_ops/new',
+      fetch('/api/v1/a_dashboard_ops/new',
       {
         method:'POST',
         headers: { "Content-Type": "application/json"},
@@ -141,7 +141,7 @@ export const A_dashoboard_main = () => {
 
 
       console.log(formData);
-     fetch('https://localhost:8080/api/v1/a_dashboard_ops/edit',
+     fetch('/api/v1/a_dashboard_ops/edit',
       {
         method:'POST',
         headers: { "Content-Type": "application/json" },
@@ -165,13 +165,8 @@ export const A_dashoboard_main = () => {
 
    useEffect(() => {
    
-     fetch('https://localhost:8080/api/v1/a_dashboard_main',{
-      method:'POST',
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${sessionStorage.getItem("token")}`
-      },
-       mode: "cors"
+     fetch('/api/v1/a_dashboard_main',{
+      method:'POST'
      })
      .then(response => {
        if (!response.ok) {

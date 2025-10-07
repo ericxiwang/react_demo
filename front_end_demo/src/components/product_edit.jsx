@@ -36,7 +36,7 @@ function Product_cate_edit() {
 
 
   useEffect(() => {
-    fetch('https://localhost:8080/api/v1/product_cate_list/query',{method:'POST'})
+    fetch('/api/v1/product_cate_list/query',{method:'POST'})
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -59,7 +59,7 @@ function Product_cate_edit() {
 
     const Add_new_item = () => {
   
-      fetch('https://localhost:8080/api/v1/product_cate_list/add',
+      fetch('/api/v1/product_cate_list/add',
         {
         method: "POST",
         headers: { "Content-Type": "application/json" },

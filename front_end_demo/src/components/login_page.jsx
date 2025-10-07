@@ -17,7 +17,7 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("https://localhost:8080/api/v1/auth", 
+      const response = await fetch("/api/v1/auth", 
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

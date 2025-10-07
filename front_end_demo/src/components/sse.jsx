@@ -4,7 +4,7 @@ function SSE() {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    const eventSource = new EventSource('https://localhost:8080/api/v1/sse'); // Replace with your Flask server URL
+    const eventSource = new EventSource('/api/v1/sse'); // Replace with your Flask server URL
 
     eventSource.onopen = () => {
       console.log('SSE connection opened.');

@@ -19,7 +19,7 @@ export const  A_workflow_main = () => {
     
 
     useEffect(() => {
-        fetch('https://localhost:8080/api/v1/all_user',{method:'POST'})
+        fetch('/api/v1/all_user',{method:'POST'})
          .then(response => {
            if (!response.ok) {
              throw new Error('Network response was not ok');
@@ -46,14 +46,14 @@ export const  A_workflow_main = () => {
     useEffect(() => {
         console.log("Fetching tickets for:", selectedEmail);
      
-        fetch(`https://localhost:8080/api/v1/a_workflow_ticketlist/${selectedEmail}`,
+        fetch(`/api/v1/a_workflow_ticketlist//${selectedEmail}`,
             {
                 method:'GET',
                 headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${sessionStorage.getItem("token")}`
+                "Content-Type": "application/json"
+               // "Authorization": `Bearer ${sessionStorage.getItem("token")}`
               },
-              mode: "cors"
+             // mode: "cors"
             })
          .then(response => {
            if (!response.ok) {

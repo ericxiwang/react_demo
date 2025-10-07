@@ -10,7 +10,7 @@ const [users, setUsers] = useState([]);
       const [error, setError] = useState(null);
 
   useEffect(() => {
-     fetch('https://localhost:8080/api/v1/all_user',{method:'POST'})
+     fetch('/api/v1/all_user',{method:'POST'})
   .then(response => {
     if (!response.ok) {
       throw new Error('Network response was not ok');

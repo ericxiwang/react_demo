@@ -116,7 +116,7 @@ const handleSubmit = (e) => {
  
       console.log("!!!!!!!!!!!!add new bug ticket",bug_formData);
       
-      fetch('https://localhost:8080/api/v1/b_dashboard_ops/new',
+      fetch('/api/v1/b_dashboard_ops/new',
       {
         method:'POST',
         headers: { "Content-Type": "application/json" },
@@ -138,7 +138,7 @@ const handleSubmit = (e) => {
     {
 
     
-     fetch('https://localhost:8080/api/v1/b_dashboard_ops/edit',
+     fetch('/api/v1/b_dashboard_ops/edit',
       {
         method:'POST',
         headers: { "Content-Type": "application/json" },

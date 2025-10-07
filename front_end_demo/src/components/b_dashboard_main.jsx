@@ -25,7 +25,7 @@ const Edit_bug_form = (e) => {
     }
 
     useEffect(() => {
-       fetch("https://localhost:8080/api/v1/b_dashboard_main", {
+       fetch("/api/v1/b_dashboard_main", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
