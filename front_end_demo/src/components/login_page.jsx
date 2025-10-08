@@ -35,7 +35,7 @@ function LoginPage() {
         sessionStorage.setItem("token", data.access_token); // sessionStorage
         console.log("Token stored in sessionStorage:", data.access_token);
         setSuccess(true);
-        navigate("/a_dashboard"); // Redirect to home page after successful login
+        navigate("/a_dashboard", { replace: true }); // Redirect to home page after successful login
       } 
       else 
         {

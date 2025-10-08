@@ -20,7 +20,7 @@ function HEADER() {
             <Nav.Link href="/u_management">User Management</Nav.Link>
             <Nav.Link href="/LoginPage">Login</Nav.Link>
             <Nav.Link href="/logout">logout</Nav.Link>
-            <Nav.Link href="/api_test">api_test</Nav.Link>
+            <Nav.Link href="/js_demo">JS demo</Nav.Link>
             <Nav.Link href="/sse">sse</Nav.Link>
             <Nav.Link href="/test">test</Nav.Link>
           </Nav>
@@ -48,7 +48,7 @@ function HEADER() {
             <Nav.Link href="/u_management">User Management</Nav.Link>
             <Nav.Link href="/LoginPage">Login</Nav.Link>
             <Nav.Link href="/logout">logout</Nav.Link>
-            <Nav.Link href="/api_test">api_test</Nav.Link>
+            <Nav.Link href="/js_demo">JS demo</Nav.Link>
             <Nav.Link href="/sse">sse</Nav.Link>
             <Nav.Link href="/test">test</Nav.Link>
           </Nav>

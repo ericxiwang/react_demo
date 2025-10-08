@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { List_operation } from "../libs/list_operation"
-function DynamicInputBoxes() {
+import Header from "./header";
+function JS_DEMO() {
   const [inputs, setInputs] = useState([{ name: "input1", value: "" }]);
 
   const [return_list,setReturn_list] = useState([])
@@ -46,6 +47,30 @@ function DynamicInputBoxes() {
       console.log("sorted list===>",new_instance)
       setReturn_list(new_instance)
     }
+    
+    else if (clicked_Button && clicked_Button.id === "Find_duplicates"){
+      console.log("Find_duplicates",get_all_values);
+      const new_instance = new List_operation(get_all_values).Find_duplicates()
+      console.log("Find_duplicates===>",new_instance)
+      setReturn_list(new_instance)
+    }
+
+    else if (clicked_Button && clicked_Button.id === "Parenthesis_checker"){
+      console.log("input before validated",get_all_values);
+      const new_instance = new List_operation(get_all_values).Parenthesis_checker()
+      const return_result = ["result",new_instance]
+      console.log("sorted list===>",return_result)
+      setReturn_list(return_result)
+    }
+
+     else if (clicked_Button && clicked_Button.id === "FibonacciSeq_generator"){
+      console.log("fib count",get_all_values);
+      const new_instance = new List_operation(get_all_values).FibonacciSeq_generator()
+      console.log("fib seq ===>",new_instance)
+      setReturn_list(new_instance)
+    }
+
+
 
 
     
@@ -56,6 +81,10 @@ function DynamicInputBoxes() {
   };
 
   return (
+    <div>
+    <div>
+      <Header />
+    </div>
     <div>
     <Form className="p-3" onSubmit={handleSubmit}>
       <h4>Dynamic Input Boxes</h4>
@@ -85,14 +114,18 @@ function DynamicInputBoxes() {
 
       <div className="d-flex flex-wrap gap-2 mb-3"><Button variant="success" type="submit" id="list_reverse"> ✅ List Reverse</Button></div>
       <div className="d-flex flex-wrap gap-2 mb-3"><Button variant="success" type="submit" id="bubble_sort"> ✅ Bubble Sort</Button></div>
+      <div className="d-flex flex-wrap gap-2 mb-3"><Button variant="success" type="submit" id="Find_duplicates"> ✅ Find_duplicates</Button></div>
+      <div className="d-flex flex-wrap gap-2 mb-3"><Button variant="success" type="submit" id="Parenthesis_checker"> ✅ Parenthesis_checker</Button></div>
+      <div className="d-flex flex-wrap gap-2 mb-3"><Button variant="success" type="submit" id="FibonacciSeq_generator"> ✅ FibonacciSeq_generator</Button></div>
       
     </Form>
       <div className="d-flex flex-wrap gap-2 mb-3">
       {return_list && return_list.map((key) =>
-         <Form.Control type="text" placeholder={key}  style={{ width: "100px" }} />)}
+         <Form.Control type="text" placeholder={key.toString()}  style={{ width: "100px" }} />)}
       </div>
+    </div>
     </div>
     );
 }
 
-export default DynamicInputBoxes;
+export default JS_DEMO;
